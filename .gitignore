@@ -1,0 +1,17 @@
+features
+
+annotations/*.tsv
+annotations/*.npy
+annotations/*.hdf5
+
+examine.py
+
+__pycache__
+
+*.pyc
+
+*.pkl
+
+tensorboard_logs
+output_logs
+images
