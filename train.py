@@ -151,7 +151,8 @@ if __name__ == '__main__':
     parser.add_argument("--image-root", type=str)
     parser.add_argument('--logs_folder', type=str, default='tensorboard_logs')
     args = parser.parse_args()
-    print(args)
+    
+    # print(args)
 
     print('Meshed-Memory Transformer Training')
 
@@ -243,7 +244,6 @@ if __name__ == '__main__':
             writer.add_scalar('data/train_loss', train_loss, e)
             writer.add_scalar('data/reward', reward, e)
             writer.add_scalar('data/reward_baseline', reward_baseline, e)
-
         # Validation loss
         val_loss = evaluate_loss(model, dataloader_val, loss_fn, text_field)
         writer.add_scalar('data/val_loss', val_loss, e)
