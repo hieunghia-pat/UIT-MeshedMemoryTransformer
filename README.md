@@ -1,7 +1,7 @@
 Meshed-Memory Transformer
 ===
 
-![images/m2_structure.png](Meshed-Memory Transformer architecture)
+![Meshed-Memory Transformer architecture](images/m2_structure.png)
 
 This is the re-implemented version of [Meshed-Memory Transformer](https://arxiv.org/pdf/1912.08226.pdf) (M2 Transformer) to evaluate its performance on the [UIT-ViIC](https://arxiv.org/pdf/2002.00175.pdf) dataset and [VieCap4H](https://people.cs.umu.se/sonvx/files/VieCap4H_VLSP21.pdf) dataset.
 
