@@ -1,89 +1,29 @@
-# M²: Meshed-Memory Transformer
-This repository contains the reference code for the paper _[Meshed-Memory Transformer for Image Captioning](https://arxiv.org/abs/1912.08226)_ (CVPR 2020).
+Meshed-Memory Transformer
+===
 
-Please cite with the following BibTeX:
+![images/m2_structure.png](Meshed-Memory Transformer architecture)
 
-```
-@inproceedings{cornia2020m2,
-  title={{Meshed-Memory Transformer for Image Captioning}},
-  author={Cornia, Marcella and Stefanini, Matteo and Baraldi, Lorenzo and Cucchiara, Rita},
-  booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
-  year={2020}
-}
-```
-<p align="center">
-  <img src="images/m2.png" alt="Meshed-Memory Transformer" width="320"/>
-</p>
+This is the re-implemented version of [Meshed-Memory Transformer](https://arxiv.org/pdf/1912.08226.pdf) (M2 Transformer) to evaluate its performance on the [UIT-ViIC](https://arxiv.org/pdf/2002.00175.pdf) dataset and [VieCap4H](https://people.cs.umu.se/sonvx/files/VieCap4H_VLSP21.pdf) dataset.
 
-## Environment setup
-Clone the repository and create the `m2release` conda environment using the `environment.yml` file:
-```
-conda env create -f environment.yml
-conda activate m2release
-```
+For detailed implementation for this repository, please visit the repository [OpenViIC](https://github.com/hieunghia-pat/OpenViIC). To construct the M2 Transformer method, please change the configration in the `configuration.py` file in the repository [OpenViIC](https://github.com/hieunghia-pat/OpenViIC) as below:
 
-Then download spacy data by executing the following command:
-```
-python -m spacy download en
+```python
+encoder_self_attention = AugmentedMemoryScaledDotProductAttention
+encoder_self_attention_args = {"m": total_memory}
+encoder_args = {}
+decoder_self_attention = ScaledDotProductAttention
+decoder_enc_attention = ScaledDotProductAttention
+decoder_self_attention_args = {}
+decoder_enc_attention_args = {}
+decoder_args = {"N_enc": nlayers}
+encoder = MultiLevelEncoder
+decoder = MeshedDecoder
+transformer_args = {}
 ```
 
-Note: Python 3.6 is required to run our code. 
+## Contact
+This project constructed under instruction of the NLP@UIT research group. For more information about the NLP@UIT group or relevant publications, please visit [http://nlp.uit.edu.vn/](http://nlp.uit.edu.vn/).
 
-
-## Data preparation
-To run the code, annotations and detection features for the COCO dataset are needed. Please download the annotations file [annotations.zip](https://drive.google.com/file/d/1i8mqKFKhqvBr8kEp3DbIh9-9UNAfKGmE/view?usp=sharing) and extract it.
-
-Detection features are computed with the code provided by [1]. To reproduce our result, please download the COCO features file [coco_detections.hdf5](https://drive.google.com/open?id=1MV6dSnqViQfyvgyHrmAT_lLpFbkzp3mx) (~53.5 GB), in which detections of each image are stored under the `<image_id>_features` key. `<image_id>` is the id of each COCO image, without leading zeros (e.g. the `<image_id>` for `COCO_val2014_000000037209.jpg` is `37209`), and each value should be a `(N, 2048)` tensor, where `N` is the number of detections. 
-
-
-## Evaluation
-To reproduce the results reported in our paper, download the pretrained model file [meshed_memory_transformer.pth](https://drive.google.com/file/d/1naUSnVqXSMIdoiNz_fjqKwh9tXF7x8Nx/view?usp=sharing) and place it in the code folder.
-
-Run `python test.py` using the following arguments:
-
-| Argument | Possible values |
-|------|------|
-| `--batch_size` | Batch size (default: 10) |
-| `--workers` | Number of workers (default: 0) |
-| `--features_path` | Path to detection features file |
-| `--annotation_folder` | Path to folder with COCO annotations |
-
-#### Expected output
-Under `output_logs/`, you may also find the expected output of the evaluation code.
-
-
-## Training procedure
-Run `python train.py` using the following arguments:
-
-| Argument | Possible values |
-|------|------|
-| `--exp_name` | Experiment name|
-| `--batch_size` | Batch size (default: 10) |
-| `--workers` | Number of workers (default: 0) |
-| `--m` | Number of memory vectors (default: 40) |
-| `--head` | Number of heads (default: 8) |
-| `--warmup` | Warmup value for learning rate scheduling (default: 10000) |
-| `--resume_last` | If used, the training will be resumed from the last checkpoint. |
-| `--resume_best` | If used, the training will be resumed from the best checkpoint. |
-| `--features_path` | Path to detection features file |
-| `--annotation_folder` | Path to folder with COCO annotations |
-| `--logs_folder` | Path folder for tensorboard logs (default: "tensorboard_logs")|
-
-For example, to train our model with the parameters used in our experiments, use
-```
-python train.py   --exp_name m2_transformer \
-                  --batch_size 16 \
-                  --m 40 \
-                  --head 8 \
-                  --warmup 10000 \
-                  --features_path annotations/uitviic_detections.hdf5 \
-                  --annotation_folder annotations \
-                  --image-root /mnt/f9e5fe40-5d81-46dc-8450-9c1e67eff197/Projects/UIT-ViIC
-```
-
-<p align="center">
-  <img src="images/results.png" alt="Sample Results" width="850"/>
-</p>
-
-#### References
-[1] P. Anderson, X. He, C. Buehler, D. Teney, M. Johnson, S. Gould, and L. Zhang. Bottom-up and top-down attention for image captioning and visual question answering. In _Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition_, 2018.
+ - Nghia Hieu Nguyen: [19520178@gm.uit.edu.vn](mailto:19520178@gm.uit.edu.vn)
+ - Duong T.D Vo: [19520483@gm.uit.edu.vn](mailto:19520483@gm.uit.edu.vn)
+ - Minh-Quan Ha: [19522076@gm.uit.edu.vn](mailto:19522076@gm.uit.edu.vn)
